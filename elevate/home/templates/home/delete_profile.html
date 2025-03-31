@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <div class="container bg-info shadow-md p-5 form-layout">
+        <h1>Delete Profile</h1>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+    
+            Are u sure U want to delete Your Profile '{{usr.username}}' ?
+            
+            <br><br>
+            <button type="submit" class="btn btn-secondary btn-lg w-50 btn-block p-3">
+                Confirm</button>
+            <br><br>
+            <a href="{% url 'profile' usr.username %}">Back</a>
+        </form>
+    </div>
+
+
+{% endblock content %}
+
+
+

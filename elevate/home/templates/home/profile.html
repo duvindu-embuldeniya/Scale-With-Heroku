@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    
+
+    <div class="container bg-info shadow-md p-5 form-layout">
+        <h1 style="text-align: center;">Profile</h1>
+        <br>
+
+        <div style="text-align: center;">
+           <b>Profile Pic :- <img src="{{usr.profile.imgUrl}}" 
+            alt="profile_pic" width="200px" height="200px"></b>
+           <br><br>
+           <b>Username :- {{usr.username}}</b>
+           <br><br>
+           <b>Email :- {{usr.email}}</b>
+           <br><br>
+        </div>
+
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{u_form|crispy}}
+            {{p_form|crispy}}
+
+            <br>
+            <button type="submit" class="btn btn-secondary btn-lg w-50 btn-block p-3">
+                Update</button>
+            &nbsp;&nbsp;
+            <a href="{% url 'delete-profile' usr.pk %}">Delete</a>
+        </form>
+    </div>
+
+    
+{% endblock content %}
+
+
+

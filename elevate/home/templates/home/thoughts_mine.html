@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    
+        {% for thought in thoughts %}
+            <div class="container form-layout">
+                <b>{{thought.title}}</b>   <br>
+                <i>{{thought.content}}</i>  <br><br>
+                {{thought.created|timesince}} ago
+            </div>
+
+            <br>
+        {% endfor %}
+        
+
+{% endblock content %}
+
+
+
