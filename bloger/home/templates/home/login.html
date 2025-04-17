@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <div style="width: 500px; 
+                background-color: white; 
+                margin: 10px auto;
+                padding: 20px;">
+
+        <h1>Log-In</h1>
+        <form action="" method="POST" autocomplete="off">
+            {% csrf_token %}
+
+            <Label>Username :- </Label>&nbsp;
+            <input type="text" name="username" required>
+            <br><br>
+
+            <label>Password :- </label>&nbsp;
+            <input type="password" name="password" required>
+
+            <br><br>
+            <button type="submit">Login</button>
+            &nbsp; <a href="{% url 'register' %}">Sign Up</a>
+        </form>
+
+    </div>
+
+{% endblock content %}
