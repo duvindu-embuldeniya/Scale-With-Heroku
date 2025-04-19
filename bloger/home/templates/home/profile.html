@@ -15,9 +15,9 @@
             
             <br><br>
 
-            <a href="">Update</a>
+            <a href="{% url 'profile_update' current_user.username %}">Update</a>
             &nbsp;&nbsp;
-            <a href="">Delete</a>
+            <a href="{% url 'profile_delete' current_user.username %}">Delete</a>
         </div>
 
 {% endblock content %}

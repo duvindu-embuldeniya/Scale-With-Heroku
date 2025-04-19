@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from . forms import UserRegistrationForm
+from . forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 def home(request):
     return render(request, 'home/index.html')
@@ -56,8 +58,38 @@ def logout(request):
     return redirect('home')
 
 
-
+@login_required
 def profile(request, username):
     current_user = User.objects.get(username = username)
     context = {'current_user':current_user}
     return render(request, 'home/profile.html', context)
+
+
+@login_required
+def profile_update(request, username):
+    current_user = User.objects.get(username = username)
+    u_form = UserUpdateForm(instance=current_user)
+    p_form = ProfileUpdateForm(instance=current_user.profile)
+
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=current_user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=current_user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            updated_user = u_form.save()
+            p_form.save()
+            return redirect('profile', username = updated_user.username)
+        else:
+            return redirect('profile', username = current_user.username)
+    context = {'current_user':current_user, 'u_form':u_form, 'p_form':p_form}
+    return render(request, 'home/profile_update.html', context)
+
+
+@login_required
+def profile_delete(request, username):
+    current_user = User.objects.get(username = username)
+    cu_profile = current_user.profile
+    if request.method == 'POST':
+        cu_profile.delete()
+        return redirect('home')
+    context = {'current_user':current_user}
+    return render(request, 'home/profile_delete.html', context)
