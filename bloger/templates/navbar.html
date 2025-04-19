@@ -46,3 +46,10 @@
 </nav>
 
 <br>
+
+
+{% for message in messages %}
+  <div style="padding: 1em; background-color: yellow;">
+    {{message}}
+  </div>
+{% endfor %}
