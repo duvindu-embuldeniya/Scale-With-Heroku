@@ -57,5 +57,7 @@ def logout(request):
 
 
 
-def dashboard(request):
-    pass
+def profile(request, username):
+    current_user = User.objects.get(username = username)
+    context = {'current_user':current_user}
+    return render(request, 'home/profile.html', context)
