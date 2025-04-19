@@ -20,11 +20,25 @@ class UserRegistrationForm(UserCreationForm):
 
 
 
+# class UserUpdateForm(forms.ModelForm):
+#     class Meta:
+#         model = User
+#         fields = ['username', 'email']
+
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email']
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        # Get the current user from the form instance
+        current_user = self.instance
+
+        # Check if email exists and doesn't belong to the current user
+        if User.objects.filter(email=email).exclude(pk=current_user.pk).exists():
+            raise ValidationError("This email is already in use by another account.")
+        return email
 
 
 
