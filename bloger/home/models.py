@@ -27,7 +27,7 @@ class Blog(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.author.username}'s blog"
+        return f"{self.title}'s blog"
 
 
 
