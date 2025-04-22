@@ -21,4 +21,33 @@
             <a href="{% url 'profile_delete' current_user.username %}">Delete</a>
         </div>
 
+
+        <div style="width: 450px;
+        background-color: white;
+        padding: 20px;
+        margin: 10px auto;">
+
+            {% for blog in blogs %}
+
+                <div><b>Title :- </b>{{blog.title}}</div>
+                <div><b>Description :- </b>{{blog.description}}</div>
+                <div><b>Created :- </b>{{blog.created}}</div>
+
+                {% for tag in blog.tag_set.all %}
+                    <span>{{tag.name}}&nbsp;</span>
+                {% endfor %}
+                <br>
+
+                <a href="{% url 'blog_update' blog.pk %}">Update</a>
+                &nbsp;
+                <a href="{% url 'blog_delete' blog.pk %}">Delete</a>
+                <hr>
+
+
+                
+
+            {% endfor %}
+
+        </div>
+
 {% endblock content %}

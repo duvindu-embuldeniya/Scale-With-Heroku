@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
-from . models import Profile
+from . models import Profile, Blog
 from django.core.exceptions import ValidationError
 
 
@@ -48,3 +48,11 @@ class ProfileUpdateForm(forms.ModelForm):
         model = Profile
         fields = ['f_name', 'l_name', 'image']
 
+
+
+
+
+class BlogForm(forms.ModelForm):
+    class Meta:
+        model = Blog
+        fields = ['title', 'description']

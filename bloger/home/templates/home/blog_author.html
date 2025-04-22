@@ -7,11 +7,13 @@
                     background-color: white;
                     padding: 20px;
                     margin: 10px auto;">
-            {% if request.user.is_authenticated %}
-                <h2>Welcome... {{request.user.username}}</h2>
-            {% else %}
-                <h2> Simply.... The best website out there!  </h2>
-            {% endif %}
+            
+            <span><b>Username :- </b>{{author.username}}</span><br>
+            <span><b>Enail :- </b>{{author.email}}</span><br>
+            <div style="text-align: center;" >   
+                <img src="{{author.profile.img_url}}" alt="author's pic" height="100px" width="100px">
+            </div>
+
         </div>
 
         <br><br>
@@ -23,10 +25,8 @@
         margin: 10px auto;">
 
             {% for blog in blogs %}
-                <div><img src="{{blog.author.profile.img_url}}" alt="profile_pic" width="100px" height="100px"></div>
-                <br>
-                <a href="{% url 'blog_author' blog.author.username %}"><div><b>Author :- </b>{{blog.author.username}}</div></a>
-                <a href="{% url 'blog_detail' blog.pk %}"><div><b>Title :- </b>{{blog.title}}</div></a>
+
+                <div><b>Title :- </b>{{blog.title}}</div>
                 <div><b>Description :- </b>{{blog.description}}</div>
                 <div><b>Created :- </b>{{blog.created}}</div>
 

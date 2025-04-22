@@ -19,6 +19,7 @@ class Profile(models.Model):
         except Exception as ex:
             return '/static/images/static_profile_model/default.png'
         
+        
 
 class Blog(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -29,6 +30,8 @@ class Blog(models.Model):
     def __str__(self):
         return f"{self.title}'s blog"
 
+    class Meta:
+        ordering = ['-created']
 
 
 class Tag(models.Model):

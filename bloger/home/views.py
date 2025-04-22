@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from . forms import UserRegistrationForm, ProfileUpdateForm, UserUpdateForm
+from . forms import UserRegistrationForm, ProfileUpdateForm, UserUpdateForm, BlogForm
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -69,7 +69,8 @@ def profile(request, username):
     current_user = User.objects.get(username = username)
     if current_user.username != request.user.username:
         return HttpResponse("<h1>403</h1>")
-    context = {'current_user':current_user}
+    blogs = current_user.blog_set.all()
+    context = {'current_user':current_user, 'blogs':blogs}
     return render(request, 'home/profile.html', context)
 
 
@@ -115,20 +116,38 @@ def profile_delete(request,username):
 
 
 def blog_detail(request, pk):
-    pass
+    blog = Blog.objects.get(id = pk)
+    context = {'blog':blog}
+    return render(request, 'home/blog_detail.html', context)
 
 
 
 def blog_create(request):
-    pass
-
+    form = BlogForm()
+    if request.method == 'POST':
+        form = BlogForm(request.POST)
+        if form.is_valid():
+            new_blog = form.save(commit=False)
+            new_blog.author = request.user
+            new_blog.save()
+            messages.success(request, "Blog created successfully!")
+            return redirect('blog_detail', pk = new_blog.pk)
+    context = {'form':form}
+    return render(request, 'home/blog_create.html', context)
 
 
 def blog_update(request, pk):
-    pass
+    return HttpResponse("<h2>Under Cons</h2>")
 
 
 
 def blog_delete(request, pk):
-    pass
+    return HttpResponse("<h2>Under Cons</h2>")
+
+
+def blog_author(request, username):
+    author = User.objects.get(username = username)
+    blogs = author.blog_set.all()
+    context = {'author':author, 'blogs':blogs}
+    return render(request, 'home/blog_author.html', context)
 

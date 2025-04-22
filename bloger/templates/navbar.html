@@ -21,14 +21,23 @@
 
         
         <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'home' %}">Home</a>
+          </li>
+          <br>
           {% if request.user.is_authenticated %}
-            <li class="nav-item">
-                <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'logout' %}">Logout</a>
-            </li>
-            <br>
             <li class="nav-item">
                 <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'profile' request.user.username %}">Profile</a>
             </li>
+            <br>
+            <li class="nav-item">
+              <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'blog_create' %}">+Blog</a>
+            </li>
+            <br>
+            <li class="nav-item">
+              <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'logout' %}">Logout</a>
+            </li>
+
 
           {% else %}
             <li class="nav-item">
