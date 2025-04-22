@@ -14,4 +14,29 @@
             {% endif %}
         </div>
 
+        <br><br>
+
+
+        <div style="width: 450px;
+        background-color: white;
+        padding: 20px;
+        margin: 10px auto;">
+
+            {% for blog in blogs %}
+                <div><img src="{{blog.author.profile.img_url}}" alt="profile_pic" width="100px" height="100px"></div>
+                <br>
+                <div><b>Author :- </b>{{blog.author.username}}</div>
+                <div><b>Title :- </b>{{blog.title}}</div>
+                <div><b>Description :- </b>{{blog.description}}</div>
+                <div><b>Created :- </b>{{blog.created}}</div>
+
+                {% for tag in blog.tag_set.all %}
+                    <span>{{tag.name}}&nbsp;</span>
+                {% endfor %}
+                <hr>
+
+            {% endfor %}
+
+        </div>
+
 {% endblock content %}

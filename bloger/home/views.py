@@ -5,9 +5,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib import messages
+from . models import Blog, Tag
 
 def home(request):
-    return render(request, 'home/index.html')
+    blogs = Blog.objects.all()
+    tags = Tag.objects.all()
+    context = {'blogs':blogs, 'tags':tags}
+    return render(request, 'home/index.html', context)
 
 
 
@@ -107,3 +111,24 @@ def profile_delete(request,username):
         return redirect('home')
     context = {'current_user':current_user}
     return render(request, 'home/profile_delete.html', context)
+
+
+
+def blog_detail(request, pk):
+    pass
+
+
+
+def blog_create(request):
+    pass
+
+
+
+def blog_update(request, pk):
+    pass
+
+
+
+def blog_delete(request, pk):
+    pass
+
