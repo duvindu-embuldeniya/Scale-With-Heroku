@@ -6,11 +6,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib import messages
 from . models import Blog, Tag
+from .utils import searchBlog
 
 def home(request):
-    blogs = Blog.objects.all()
-    tags = Tag.objects.all()
-    context = {'blogs':blogs, 'tags':tags}
+    # blogs = Blog.objects.all()
+    blogs, query = searchBlog(request)
+    context = {'blogs':blogs, 'query':query}
     return render(request, 'home/index.html', context)
 
 
