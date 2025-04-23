@@ -7,10 +7,28 @@ from django.http import HttpResponse
 from django.contrib import messages
 from . models import Blog, Tag
 from .utils import searchBlog
+from django.core.paginator import Paginator, PageNotAnInteger,EmptyPage
 
 def home(request):
     # blogs = Blog.objects.all()
     blogs, query = searchBlog(request)
+
+    result = 1
+    paginator = Paginator(blogs, result)
+
+    page = request.GET.get('page') if request.GET.get('page') else ''
+
+    try:
+        blogs = paginator.page(page)
+    
+    except PageNotAnInteger:
+        page = '1'
+        blogs = paginator.page(page)
+
+    except EmptyPage:
+        page = paginator.num_pages
+        blogs = paginator.page(page)
+
     context = {'blogs':blogs, 'query':query}
     return render(request, 'home/index.html', context)
 

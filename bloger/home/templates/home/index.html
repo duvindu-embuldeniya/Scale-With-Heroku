@@ -45,7 +45,13 @@
                 <hr>
 
             {% endfor %}
+            <br><br>
+
+            {% include 'paginator.html' with queryset=blogs %}
 
         </div>
+
+
+
 
 {% endblock content %}
