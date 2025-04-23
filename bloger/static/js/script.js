@@ -10,7 +10,7 @@ for(let i=0; i<pages.length; i++){
         let page = this.dataset.page
 
         form.innerHTML += `<input type='text' name='page' value=${page}>`
-        
+
         form.submit();
     })
 }
