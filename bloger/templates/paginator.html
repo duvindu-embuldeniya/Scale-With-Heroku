@@ -2,24 +2,24 @@
 
 
     {% if queryset.has_previous %}
-        <a href="?page=1">First</a>
-        <a href="?page={{queryset.previous_page_number}}">Previous</a>
+        <a href="?page=1" data-page="{{1}}" class="page">First</a>
+        <a href="?page={{queryset.previous_page_number}}" class="page" data-page="{{queryset.previous_page_number}}">Previous</a>
     {% endif %}
 
 
     {% for num in queryset.paginator.page_range %}
         {% if num == queryset.number %}
             <a style="padding: 1em; background-color: aqua;" 
-            href="?page={{num}}">{{num}}</a>
+            href="?page={{num}}" class="page" data-page="{{num}}">{{num}}</a>
         {% elif num > queryset.number|add:'-3' and num < queryset.number|add:'3' %}
-            <a href="?page={{num}}">{{num}}</a>
+            <a href="?page={{num}}" class="page" data-page="{{num}}">{{num}}</a>
         {% endif %}
     {% endfor %}
 
 
     {% if queryset.has_next %}
-        <a href="?page={{queryset.next_page_number}}">Next</a>
-        <a href="?page={{queryset.paginator.num_pages}}">Last</a>
+        <a href="?page={{queryset.next_page_number}}" data-page="{{queryset.next_page_number}}" class="page">Next</a>
+        <a href="?page={{queryset.paginator.num_pages}}" data-page="{{queryset.paginator.num_pages}}" class="page">Last</a>
     {% endif %}
 
 {% endif %}
