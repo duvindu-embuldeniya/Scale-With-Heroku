@@ -119,7 +119,6 @@ def profile_update(request,username):
 
 
 
-
 @login_required
 def profile_delete(request,username):
     current_user = User.objects.get(username = username)
@@ -133,14 +132,14 @@ def profile_delete(request,username):
     return render(request, 'home/profile_delete.html', context)
 
 
-
+@login_required
 def blog_detail(request, pk):
     blog = Blog.objects.get(id = pk)
     context = {'blog':blog}
     return render(request, 'home/blog_detail.html', context)
 
 
-
+@login_required
 def blog_create(request):
     form = BlogForm()
     if request.method == 'POST':
@@ -155,15 +154,36 @@ def blog_create(request):
     return render(request, 'home/blog_create.html', context)
 
 
+@login_required
 def blog_update(request, pk):
-    return HttpResponse("<h2>Under Cons</h2>")
+    blog = Blog.objects.get(id=pk)
+    if blog.author != request.user:
+        return HttpResponse("<h1>403</h1>")
+    form = BlogForm(instance=blog)
+    if request.method == 'POST':
+        form = BlogForm(request.POST, instance=blog)
+        if form.is_valid():
+            alt_blog = form.save()
+            messages.success(request, "Blog Updated Successfully!")
+            return redirect('profile', username = blog.author.username)
+    context = {'form':form}
+    return render(request, 'home/blog_update.html', context)
 
 
-
+@login_required
 def blog_delete(request, pk):
-    return HttpResponse("<h2>Under Cons</h2>")
+    blog = Blog.objects.get(id=pk)
+    if blog.author != request.user:
+        return HttpResponse("<h1>403</h1>")
+    if request.method == 'POST':
+        blog.delete()
+        messages.success(request, 'Blog Deleted Successfully!')
+        return redirect('profile', username = blog.author.username)
+    context = {'blog':blog}
+    return render(request, 'home/blog_delete.html', context)
 
 
+@login_required
 def blog_author(request, username):
     author = User.objects.get(username = username)
     blogs = author.blog_set.all()

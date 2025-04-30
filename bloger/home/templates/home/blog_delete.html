@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+        <div style="width: 500px;
+                    background-color: white;
+                    padding: 20px;
+                    margin: 10px auto;">
+
+            <form action="" method="POST">
+                {% csrf_token %}
+
+                <h3>
+                    Are U Sure U Want To Delete '{{blog.title}}' ?
+                </h3>
+
+                <button type="submit">Delete</button>
+                &nbsp;
+                <a href="{% url 'profile' blog.author.username %}">Back</a>
+            </form>
+
+        </div>
+
+        <br><br>
+
+
+
+
+{% endblock content %}
