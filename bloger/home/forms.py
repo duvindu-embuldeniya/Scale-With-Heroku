@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
-from . models import Profile, Blog, Review
+from . models import Profile, Blog, Review, Inbox
 from django.core.exceptions import ValidationError
 
 
@@ -62,3 +62,9 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ['vote_type', 'comment']
+
+
+class InboxForm(forms.ModelForm):
+    class Meta:
+        model = Inbox
+        fields = ['subject', 'body']

@@ -35,6 +35,10 @@
             </li>
             <br>
             <li class="nav-item">
+              <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'inbox' request.user.username %}">Inbox</a>
+            </li>
+            <br>
+            <li class="nav-item">
               <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'logout' %}">Logout</a>
             </li>
 

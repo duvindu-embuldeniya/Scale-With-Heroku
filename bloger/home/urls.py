@@ -17,4 +17,11 @@ urlpatterns = [
     path('blog_create/', blog_create, name = 'blog_create'),
     path('blog_update/<int:pk>/', blog_update, name = 'blog_update'),
     path('blog_delete/<int:pk>/', blog_delete, name = 'blog_delete'),
+
+
+    path('create_message/<str:username>/', create_msg, name = 'create_msg'),
+    path('inbox/<str:username>/', inbox, name = 'inbox'),
+
+    path('view_msg/<int:pk>/', view_msg, name = 'view_msg'),
+    path('reply_message/<str:username>/', send_reply, name = 'send_reply'),
 ]

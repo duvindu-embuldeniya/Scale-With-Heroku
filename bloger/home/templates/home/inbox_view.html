@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+        <div style="width: 450px;
+        background-color: white;
+        padding: 20px;
+        margin: 10px auto;">
+
+
+
+                Sender :- {{msg.sender.username}} <br>
+                Title :- 
+                    {% if msg.is_read == False %}
+                        <span style="font-weight: bold;">{{msg.subject}}</span> 
+                    {% else %}
+                        <span>{{msg.subject}}</span> 
+                    {% endif %}
+                <br>
+                Body:- {{msg.body}} <br>
+                Created :-{{msg.created|timesince}} ago... <br>
+                <br>
+
+                <a href="{% url 'inbox' receiver.username %}">Back</a>
+
+
+
+        </div>
+
+
+
+
+{% endblock content %}

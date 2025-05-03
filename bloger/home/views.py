@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
-from . forms import UserRegistrationForm, ProfileUpdateForm, UserUpdateForm, BlogForm, ReviewForm
+from . forms import InboxForm, UserRegistrationForm, ProfileUpdateForm, UserUpdateForm, BlogForm, ReviewForm
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib import messages
-from . models import Blog, Tag
+from . models import Blog, Tag, Inbox
 from .utils import searchBlog
 from django.core.paginator import Paginator, PageNotAnInteger,EmptyPage
 
@@ -202,4 +202,57 @@ def blog_author(request, username):
     blogs = author.blog_set.all()
     context = {'author':author, 'blogs':blogs}
     return render(request, 'home/blog_author.html', context)
+
+
+@login_required
+def inbox(request, username):
+    userr = User.objects.get(username = username)
+    my_msgs = userr.receiver.all()
+    context = {'userr':userr, 'my_msgs':my_msgs}
+    return render(request, 'home/inbox_page.html', context)
+
+
+@login_required
+def view_msg(request, pk):
+    msg = Inbox.objects.get(id = pk)
+    receiver = msg.receiver
+    if msg.is_read == False:
+        msg.is_read = True
+        msg.save()
+    context = {'msg':msg, 'receiver':receiver}
+    return render(request, 'home/inbox_view.html', context)
+
+
+@login_required
+def create_msg(request, username):
+    receiver = User.objects.get(username = username)
+    form = InboxForm()
+    if request.method == 'POST':
+        form = InboxForm(request.POST)
+        if form.is_valid():
+            msg = form.save(commit=False)
+            msg.sender = request.user
+            msg.receiver = receiver
+            msg.save()
+            messages.success(request, "Message sent successfully!")
+            return redirect('blog_author', username = receiver.username)
+    context = {'form':form, 'receiver': receiver}
+    return render(request, 'home/inbox_create.html', context)
+
+
+@login_required
+def send_reply(request, username):
+    receiver = User.objects.get(username = username)
+    form = InboxForm()
+    if request.method == 'POST':
+        form = InboxForm(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.sender = request.user
+            reply.receiver = receiver
+            reply.save()
+            messages.success(request, "Reply Added Successfully!")
+            return redirect('inbox', username = request.user.username)
+    context = {'form':form}
+    return render(request, 'home/inbox_reply.html', context)
 

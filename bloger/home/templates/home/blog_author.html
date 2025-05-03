@@ -13,7 +13,12 @@
             <div style="text-align: center;" >   
                 <img src="{{author.profile.img_url}}" alt="author's pic" height="100px" width="100px">
             </div>
-
+            <br>
+                {% if request.user != author %}
+                    <a style="background-color: aqua;
+                    padding: 1em;" href="{% url 'create_msg' author.username %}">Message</a>
+                {% endif %}
+            <br>
         </div>
 
         <br><br>
