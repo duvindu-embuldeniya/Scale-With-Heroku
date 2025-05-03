@@ -77,3 +77,15 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.blog.title} = {self.writer.username} = {self.vote_type}"
+
+
+
+class Inbox(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
+    subject = models.CharField(max_length=200)
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.sender.username} to {self.receiver.username} -> {self.subject}"
