@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from . forms import UserRegistrationForm, ProfileUpdateForm, UserUpdateForm, BlogForm
+from . forms import UserRegistrationForm, ProfileUpdateForm, UserUpdateForm, BlogForm, ReviewForm
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -65,7 +65,7 @@ def login(request):
         if auth_user is not None:
             auth.login(request, auth_user)
             messages.success(request, "Successfully Loged-In!")
-            return redirect('home')
+            return redirect(request.GET.get('next') if request.GET.get('next') else 'home')
         else:
             messages.error(request, "User doesn't exist!")
             return redirect('login')
@@ -132,10 +132,23 @@ def profile_delete(request,username):
     return render(request, 'home/profile_delete.html', context)
 
 
-@login_required
+# @login_required
 def blog_detail(request, pk):
     blog = Blog.objects.get(id = pk)
-    context = {'blog':blog}
+    form = ReviewForm()
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            new_vote = form.save(commit=False)
+            new_vote.blog = blog
+            new_vote.writer = request.user
+            new_vote.save()
+            messages.success(request, "Review Added Successfully!")
+
+            blog.validation
+
+            return redirect('blog_detail', pk = blog.id)
+    context = {'blog':blog, 'form':form}
     return render(request, 'home/blog_detail.html', context)
 
 

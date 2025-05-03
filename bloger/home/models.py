@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE) 
     f_name = models.CharField(max_length=200, blank=True, null=True)
@@ -21,10 +22,13 @@ class Profile(models.Model):
         
         
 
+
 class Blog(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField()
+    total_votes = models.IntegerField(default=0)
+    percentage = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -32,6 +36,21 @@ class Blog(models.Model):
 
     class Meta:
         ordering = ['-created']
+
+    @property
+    def validation(self):
+        total_votes = self.review_set.all()
+        up_votes = total_votes.filter(vote_type = 'up')
+        total = total_votes.count()
+        percentage = (up_votes.count()/total) * 100
+        self.total_votes = total
+        self.percentage = percentage
+        self.save()
+
+    @property
+    def users_list(self):
+        lst = self.review_set.all().values_list('writer__pk', flat=True)
+        return lst
 
 
 class Tag(models.Model):
@@ -41,3 +60,20 @@ class Tag(models.Model):
 
     def __str__(self):
         return f"{self.blog} | {self.name}"
+
+
+
+
+class Review(models.Model):
+    choices = (
+        ('up', 'Up Vote'),
+        ('down', 'Down Vote')
+    )
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    writer = models.ForeignKey(User, on_delete=models.CASCADE)
+    vote_type = models.CharField(max_length=200, choices=choices)
+    comment = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.blog.title} = {self.writer.username} = {self.vote_type}"

@@ -20,8 +20,30 @@
             {% for tag in blog.tag_set.all %}
                 <span>{{tag.name}}&nbsp;</span>
             {% endfor %}
-            
             <br><br>
+
+                Total Votes :- {{blog.total_votes}} Vote{{blog.total_votes|pluralize:'s'}}
+                <br>
+                Percentage :- {{blog.percentage}}%
+
+            <br><br>
+
+            {% if request.user.is_authenticated %}
+                {% if request.user == blog.author %}
+                    <h5>You Can't Vote On Your Own Project!</h5>
+                {% elif request.user.pk in blog.users_list %}
+                    <h5>You've Already Voted!</h5>
+                {% else %}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+
+                            {{form.as_p}}
+                        <button type="submit">Vote</button>
+                    </form>
+                {% endif %}
+            {% else %}
+                <h5><a href="{% url 'login' %}?next={{request.path}}">Login</a></h5>
+            {% endif %}
         
 
         </div>
